@@ -26,13 +26,13 @@ def index(request):
         "num_visits": num_visits + 1,
     }
 
-    return render(request, "manu/index.html", context=context)
+    return render(request, "menu/index.html", context=context)
 
 
 class DishTypeListView(LoginRequiredMixin, generic.ListView):
     model = DishType
     context_object_name = "type_list"
-    template_name = "manu/type_list.html"
+    template_name = "menu/type_list.html"
     queryset = DishType.objects.all()
     paginate_by = 3
 
@@ -55,18 +55,18 @@ class DishTypeListView(LoginRequiredMixin, generic.ListView):
 class DishTypeCreateView(LoginRequiredMixin, generic.CreateView):
     model = DishType
     fields = "__all__"
-    success_url = reverse_lazy("manu:type-list")
+    success_url = reverse_lazy("menu:type-list")
 
 
 class DishTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = DishType
     fields = "__all__"
-    success_url = reverse_lazy("manu:type-list")
+    success_url = reverse_lazy("menu:type-list")
 
 
 class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = DishType
-    success_url = reverse_lazy("manu:type-list")
+    success_url = reverse_lazy("menu:type-list")
         
 
 class DishListView(LoginRequiredMixin, generic.ListView):
@@ -88,6 +88,8 @@ class DishListView(LoginRequiredMixin, generic.ListView):
             return self.queryset.filter(
                 name__icontains=form.cleaned_data["model"]
             )
+
+
 class DishDetailView(LoginRequiredMixin, generic.DetailView):
     model = Dish
 
