@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2 class="py-2 text-center margin font-weight-bolder">
+    Welcome to PRIME Restaurant!
+  </h2>
+    <p class="py-2 text-center">The best restaurant ever!</p>
+    <h3 class="py-2 text-center font-weight-bolder">
+      The Restaurant service has the following record counts:
+    </h3>
+    <div class="d-flex">
+      <ul class="list-inline mx-auto justify-content-center">
+          <li class="list-inline-item">
+            <strong>Dishes:</strong> {{ num_dishes }}
+          </li>
+          <li class="list-inline-item">
+            <strong>Cooks:</strong> {{ num_cooks }}
+          </li>
+          <li class="list-inline-item">
+            <strong>Categories:</strong> {{ num_categories }}
+          </li>
+      </ul>
+    </div>
+
+    <p class="py-2 text-center">You have visited this page
+        {{ num_visits }} time{{ num_visits|pluralize }}.
+    </p>
+{% endblock %}

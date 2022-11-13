@@ -5,16 +5,21 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from menu.models import Cook, Dish, DishType
+from menu.forms import (CookCreationForm,
+                        CookExperienceUpdateForm,
+                        CookSearchForm,
+                        DishSearchForm,
+                        DishForm,
+                        CategorySearchForm)
+from menu.models import Cook, Dish, Category
 
 
 @login_required
 def index(request):
-    """View function for the home page of the site."""
 
     num_cooks = Cook.objects.count()
     num_dishes = Dish.objects.count()
-    num_dish_types = DishType.objects.count()
+    num_categories = Category.objects.count()
 
     num_visits = request.session.get("num_visits", 0)
     request.session["num_visits"] = num_visits + 1
@@ -22,63 +27,64 @@ def index(request):
     context = {
         "num_cooks": num_cooks,
         "num_dishes": num_dishes,
-        "num_dish_types": num_dish_types,
+        "num_categories": num_categories,
         "num_visits": num_visits + 1,
     }
 
     return render(request, "menu/index.html", context=context)
 
 
-class DishTypeListView(LoginRequiredMixin, generic.ListView):
-    model = DishType
-    context_object_name = "type_list"
-    template_name = "menu/type_list.html"
-    queryset = DishType.objects.all()
-    paginate_by = 3
+class CategoryListView(LoginRequiredMixin, generic.ListView):
+    name = Category
+    context_object_name = "category_list"
+    template_name = "menu/category_list.html"
+    queryset = Category.objects.all()
+    paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(DishTypeListView, self).get_context_data(**kwargs)
+        context = super(CategoryListView, self).get_context_data(**kwargs)
         name = self.request.GET.get("name", "")
-        context["search_form"] = DishTypeListView(initial={
+        context["search_form"] = CategorySearchForm(initial={
             "name": name
         })
         return context
 
     def get_queryset(self):
-        form = DishTypeSearchForm(self.request.GET)
+        form = CategorySearchForm(self.request.GET)
         if form.is_valid():
             return self.queryset.filter(
                 name__icontains=form.cleaned_data["name"]
             )
+        return self.queryset
 
 
-class DishTypeCreateView(LoginRequiredMixin, generic.CreateView):
-    model = DishType
+class CategoryCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Category
     fields = "__all__"
-    success_url = reverse_lazy("menu:type-list")
+    success_url = reverse_lazy("menu:category-list")
 
 
-class DishTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = DishType
+class CategoryUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Category
     fields = "__all__"
-    success_url = reverse_lazy("menu:type-list")
+    success_url = reverse_lazy("menu:category-list")
 
 
-class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
-    model = DishType
-    success_url = reverse_lazy("menu:type-list")
+class CategoryDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Category
+    success_url = reverse_lazy("menu:category-list")
         
 
 class DishListView(LoginRequiredMixin, generic.ListView):
-    model = Dish
+    name = Dish
     paginate_by = 5
-    queryset = Dish.objects.all().select_related("cooks")
+    queryset = Dish.objects.all().select_related("category")
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(DishListView, self).get_context_data(**kwargs)
-        model = self.request.GET.get("dish", "")
+        name = self.request.GET.get("dish", "")
         context["search_form"] = DishSearchForm(initial={
-            "model": model
+            "name": name
         })
         return context
 
@@ -86,7 +92,7 @@ class DishListView(LoginRequiredMixin, generic.ListView):
         form = DishSearchForm(self.request.GET)
         if form.is_valid():
             return self.queryset.filter(
-                name__icontains=form.cleaned_data["model"]
+                name__icontains=form.cleaned_data["name"]
             )
 
 
@@ -114,6 +120,7 @@ class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
 class CookListView(LoginRequiredMixin, generic.ListView):
     model = Cook
     queryset = Cook.objects.all()
+    # queryset = Cook.objects.prefetch_related("dishes__category")
     paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -134,7 +141,7 @@ class CookListView(LoginRequiredMixin, generic.ListView):
 
 class CookDetailView(LoginRequiredMixin, generic.DetailView):
     model = Cook
-    queryset = Cook.objects.all().prefetch_related("dishes__cook")
+    queryset = Cook.objects.all().prefetch_related("dishes__cooks")
 
 
 class CookCreateView(LoginRequiredMixin, generic.CreateView):
@@ -142,24 +149,24 @@ class CookCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = CookCreationForm
 
 
-class CookLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+class CookExperienceUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Cook
-    form_class = CookLicenseUpdateForm
+    form_class = CookExperienceUpdateForm
     success_url = reverse_lazy("menu:cook-list")
 
 
 class CookDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Cook
-    success_url = reverse_lazy("")
+    success_url = reverse_lazy("menu:cook-list")
 
 
 @login_required
-def toggle_assign_to_car(request, pk):
+def toggle_assign_to_dish(request, pk):
     cook = Cook.objects.get(id=request.user.id)
     if (
-        Dish.objects.get(id=pk) in cook.cars.all()
-    ):  # probably could check if car exists
-        cook.cars.remove(pk)
+        Dish.objects.get(id=pk) in cook.dishes.all()
+    ):
+        cook.dishes.remove(pk)
     else:
-        cook.cars.add(pk)
-    return HttpResponseRedirect(reverse_lazy("menu:car-detail", args=[pk]))
+        cook.dishes.add(pk)
+    return HttpResponseRedirect(reverse_lazy("menu:dish-detail", args=[pk]))
