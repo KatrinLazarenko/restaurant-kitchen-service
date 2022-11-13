@@ -55,7 +55,7 @@ class CategoryListView(LoginRequiredMixin, generic.ListView):
             return self.queryset.filter(
                 name__icontains=form.cleaned_data["name"]
             )
-        return self.queryset
+        # return self.queryset
 
 
 class CategoryCreateView(LoginRequiredMixin, generic.CreateView):
@@ -119,8 +119,8 @@ class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class CookListView(LoginRequiredMixin, generic.ListView):
     model = Cook
-    queryset = Cook.objects.all()
-    # queryset = Cook.objects.prefetch_related("dishes__category")
+    # queryset = Cook.objects.all()
+    queryset = Cook.objects.prefetch_related("dishes__category")
     paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):

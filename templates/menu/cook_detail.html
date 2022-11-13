@@ -23,13 +23,13 @@
   <h5 class="font-weight-bolder"><strong>Is staff:</strong> {{ cook.is_staff }}</h5>
   <h5 class="font-weight-bolder"><strong>Dishes:</strong></h5>
     <ul>
-      <li>
-  {% for dish in cook.dishes.all %}
-      <a><strong></strong> {{ dish.name }} (type: {{ dish.category.name }})</a>
-      </li>
+      {% for dish in cook.dishes.all %}
+        <li>
+        <a><strong></strong> {{ dish.name }} (type: {{ dish.category.name }})</a>
+        </li>
+      {% empty %}
+        <h5 class="font-weight-bolder">No dishes!</h5>
+      {% endfor %}
     </ul>
-  {% empty %}
-    <h5 class="font-weight-bolder">No dishes!</h5>
-  {% endfor %}
 
 {% endblock %}
