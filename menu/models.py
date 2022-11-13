@@ -31,5 +31,8 @@ class Dish(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     cooks = models.ManyToManyField(Cook, related_name="dishes")
 
+    class Meta:
+        ordering = ["category"]
+
     def __str__(self):
         return f"{self.name} - {self.price}"

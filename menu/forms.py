@@ -27,7 +27,9 @@ class CookCreationForm(UserCreationForm):
         )
 
     def clean_years_of_experience(self):
-        return validate_years_of_experience(self.cleaned_data["years_of_experience"])
+        return validate_years_of_experience(
+            self.cleaned_data["years_of_experience"]
+        )
 
 
 class CookExperienceUpdateForm(forms.ModelForm):
@@ -36,14 +38,18 @@ class CookExperienceUpdateForm(forms.ModelForm):
         fields = ["years_of_experience"]
 
     def clean_years_of_experience(self):
-        return validate_years_of_experience(self.cleaned_data["years_of_experience"])
+        return validate_years_of_experience(
+            self.cleaned_data["years_of_experience"]
+        )
 
 
 def validate_years_of_experience(
     years_of_experience,
 ):
     if years_of_experience < 1:
-        raise ValidationError("Experience should be greater than 1 year")
+        raise ValidationError(
+            "Experience should be greater than 1 year"
+        )
     return years_of_experience
 
 
@@ -52,7 +58,9 @@ class DishSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by name"})
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search by name"}
+        )
     )
 
 
@@ -61,7 +69,9 @@ class CategorySearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by name"})
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search by name"}
+        )
     )
 
 
@@ -70,5 +80,7 @@ class CookSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by username"})
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search by username"}
+        )
     )

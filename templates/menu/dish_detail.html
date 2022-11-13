@@ -29,8 +29,15 @@
     {{ dish.name }}
   </h1>
   <br>
-    <h5 class="font-weight-bolder">Dish type: {{ dish.category.name }}</h5>
-    <h5 class="font-weight-bolder">Dish price: {{ dish.price }}UAH</h5>
+    <h5 class="font-weight-bolder">
+      Dish type: {{ dish.category.name }}
+    </h5>
+    <h5 class="font-weight-bolder">
+      Dish price: {{ dish.price }}UAH
+    </h5>
+    <h5 class="font-weight-bolder">
+      Dish description: {{ dish.description }}
+    </h5>
     <h5 class="font-weight-bolder">Cooks:
       <ul>
         {% for cook in dish.cooks.all %}

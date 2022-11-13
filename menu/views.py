@@ -5,12 +5,14 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from menu.forms import (CookCreationForm,
-                        CookExperienceUpdateForm,
-                        CookSearchForm,
-                        DishSearchForm,
-                        DishForm,
-                        CategorySearchForm)
+from menu.forms import (
+    CookCreationForm,
+    CookExperienceUpdateForm,
+    CookSearchForm,
+    DishSearchForm,
+    DishForm,
+    CategorySearchForm
+)
 from menu.models import Cook, Dish, Category
 
 
@@ -169,4 +171,6 @@ def toggle_assign_to_dish(request, pk):
         cook.dishes.remove(pk)
     else:
         cook.dishes.add(pk)
-    return HttpResponseRedirect(reverse_lazy("menu:dish-detail", args=[pk]))
+    return HttpResponseRedirect(
+        reverse_lazy("menu:dish-detail", args=[pk])
+    )
