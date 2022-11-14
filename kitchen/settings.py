@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +20,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-z8w)p9t-g!0bl)+66re4hi0kidvx&dk4dm5e@)z9#+9mg3f+8i'
+SECRET_KEY = os.environ.get('DJANGO_SECRETE_KEY', 'django-insecure-z8w)p9t-g!0bl)+66re4hi0kidvx&dk4dm5e@)z9#+9mg3f+8i')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = False
 
-ALLOWED_HOSTS = []
+DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
+
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
