@@ -25,6 +25,6 @@ python manage.py runserver
 *Admin panel for advanced managing 
 
 ## Demo
-![Website Interface](demo.png)
+![img.png](img.png)
 
 
