@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
+from django.contrib import staticfiles
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,11 +44,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'menu',
     'crispy_forms',
-    # 'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -90,6 +93,9 @@ DATABASES = {
     }
 }
 
+# dj-database-url
+ddb_from_env = dj_database_url.config(conn_max_age=500)  # DATABASE_URL
+DATABASES["default"].update(ddb_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -132,7 +138,8 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (BASE_DIR / "static",)
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = "staticfiles/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
