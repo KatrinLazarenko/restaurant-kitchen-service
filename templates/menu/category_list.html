@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-sm-6 pl-0">
+      <form action="" method="get" class="form-inline">
+        {{ search_form|crispy }}
+        <input type="submit" value="Search" class="btn btn-secondary">
+        <a href="{% url 'menu:category-create' %}"
+           class="btn btn-secondary link-to-page">
+          Add category
+        </a>
+      </form>
+    </div>
+  </div>
+  <h1 class="py-2 text-center margin font-weight-bolder">
+    Dish categories
+  </h1>
+
+  {% if category_list %}
+    <table class="table table-hover">
+      <tr>
+        <th>ID</th>
+        <th>Category</th>
+        <th>Update category</th>
+        <th>Delete category</th>
+      </tr>
+      {% for category in category_list %}
+        <tr>
+          <td>
+              {{ category.id }}
+          </td>
+          <td>
+              {{ category.name }}
+          </td>
+          <td>
+            <a class="text-body"
+               href="{% url 'menu:category-update' pk=category.id %}">
+              Update
+            </a>
+          </td>
+          <td>
+            <a class="text-body"
+              href="{% url 'menu:category-delete' pk=category.id %}">
+              Delete
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+      <p>There are no categories.</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+
+  <div class="row">
+    <div class="col-sm-6 pl-0">
+      <form action="" method="get" class="form-inline">
+        {{ search_form|crispy }}
+        <input type="submit" value="Search" class="btn btn-secondary">
+        <a href="{% url 'menu:dish-create' %}" class="btn btn-secondary link-to-page">
+        Add dish
+        </a>
+      </form>
+    </div>
+  </div>
+
+  <h1 class="py-2 text-center font-weight-bolder margin">
+    Our dishes
+  </h1>
+
+  {% if dish_list %}
+    <ul class="py-2 text-center list-unstyled">
+      {% for dish in dish_list %}
+        <li class="font-weight-bolder">
+          <a class="text-body" href="{% url "menu:dish-detail" pk=dish.id %} ">{{ dish.name }}</a>
+          {{ dish.category.name }} - {{ dish.price }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="font-weight-bolder">Sorry we are updating menu</p>
+  {% endif %}
+{% endblock %}
