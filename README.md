@@ -4,7 +4,7 @@ Django project for cooks and dishes in restaurant
 
 ## Check it out!
 
-Restaurant project deployed to 
+[Restaurant project deployed to Render](https://restaurant-kitchen-o60g.onrender.com) 
 
 ## Instalation
 
