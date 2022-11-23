@@ -26,12 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 
 ALLOWED_HOSTS = ["127.0.0.1", "restaurant-kitchen-o60g.onrender.com"]
-
 
 # Application definition
 
@@ -137,7 +135,6 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (BASE_DIR / "static",)
 
-# STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_ROOT = "staticfiles/"
 
 # Default primary key field type
