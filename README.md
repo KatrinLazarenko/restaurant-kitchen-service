@@ -24,6 +24,10 @@ python manage.py runserver
 *Managing dishes cooke and dish categories directly from web-site
 *Admin panel for advanced managing 
 
+You can use the following for access:
+login: jamie
+password: lkjhg987
+
 ## Demo
 ![img.png](img.png)
 
