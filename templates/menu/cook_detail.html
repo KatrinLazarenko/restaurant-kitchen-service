@@ -3,9 +3,35 @@
 {% block content %}
   <div class="d-flex flex-row-reverse">
     <div class="pl-0 pt-2">
-      <a href="{% url 'menu:cook-delete' pk=cook.id %}" class="btn btn-dark link-to-page">
+{#      <a href="{% url 'menu:cook-delete' pk=cook.id %}" class="btn btn-dark link-to-page">#}
+{#        Delete#}
+{#      </a>#}
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#deleteCook">
         Delete
-      </a>
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="deleteCook" tabindex="-1" role="dialog" aria-labelledby="deleteCookLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteCookLabel">Delete this cook?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <form action="{% url 'menu:cook-delete' pk=cook.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-dark">Delete</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div class="pl-0 pt-2">
       <a href="{% url 'menu:cook-update' pk=cook.id %}" class="btn btn-secondary link-to-page">
