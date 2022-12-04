@@ -7,6 +7,11 @@
     {% csrf_token %}
     {{ form|crispy }}
 
-    <input type="submit" value="Submit" class="btn btn-dark">
+    <div class="modal-footer">
+      <a href="{% url 'menu:category-list' %}" class="btn btn-secondary link-to-page">
+        Cancel
+      </a>
+      <input type="submit" value="Submit" class="btn btn-dark">
+    </div>
   </form>
 {% endblock %}
